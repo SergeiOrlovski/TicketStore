@@ -1,0 +1,59 @@
+﻿@model TicketStore.Web.Models.CartViewModel
+
+@{
+    ViewBag.Title = "My orders";
+}
+
+<h2>My orders</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="text-center">Quantity</th>
+        <th class="text-left">Voyage</th>
+        <th class="text-right">Coast</th>
+        <th class="text-right">Total coast</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var line in Model.Cart.Lines)
+    {
+        <tr>
+            <td class="text-center">@line.Quantity</td>
+            <td class="text-left">@line._voyage.VoyageName</td>
+            <td class="text-right">@line._voyage.TicketCoast.ToString("#.## BYN")</td>
+            <td class="text-right">
+                @((line.Quantity * line._voyage.TicketCoast).ToString("#.## BYN"))
+            </td>
+            <td>
+                @using (Html.BeginForm("RemoveFromCart", "Cart"))
+                {
+                    @Html.Hidden("VoyageId", line._voyage.VoyageID)
+                    @Html.HiddenFor(x => x.ReturnUrl)
+                    <input class="btn btn-sm btn-warning" type="submit" value="Delete" />
+                }
+            </td>
+            <td>
+                @using (Html.BeginForm("BuyTicket", "Cart"))
+                {
+                    @Html.Hidden("VoyageId", line._voyage.VoyageID)
+                    @Html.HiddenFor(x => x.ReturnUrl)
+                    <input class="btn btn-sm btn-warning" type="submit" value="Buy Ticket(s)" />
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3" class="text-right">Total:</td>
+        <td class="text-right">
+            @Model.Cart.ComputeTotalValue().ToString("#.## BYN")
+        </td>
+        
+    </tr>
+    </tfoot>
+</table>
+
+<div class="text-center">
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Continue reservation</a>
+</div>

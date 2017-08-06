@@ -1,0 +1,150 @@
+﻿@using System.Web.UI.WebControls
+@using TicketStore.Domain.DbContext
+@model TicketStore.Domain.DbContext.VoyageData
+@{
+    ViewBag.Title = "Search Ticket";
+
+}
+
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+<div>
+    <h3>Search voyage:</h3>
+
+    @using (Html.BeginForm("SearchTicket", "Cart", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.Label("Departure State", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.BusStop, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Arrival state", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.BusStop1, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p><input class = "btn btn-default navbar-btn" type="submit" value="Search" /></p>
+            </div>
+    }
+
+</div>
+@if (ViewBag.Result != null)
+{
+    <h3>Voyages:</h3>
+    using (Html.BeginForm("SearchTicket", "Cart", FormMethod.Post))
+    {
+        <table class="table">
+            @*<tr class="form-group">
+                <td>
+                    <p>Name voyage</p>
+                </td>
+                <td>
+                    <p> Date and time of departure </p>
+                </td>
+                <td>
+                    <p> Date and time of arrival </p>
+                </td>
+                <td>
+                    <p> Travel Time </p>
+                </td>
+                <td>
+                    <p> Ticket Coast </p>
+                </td>*@
+
+            <thead>
+                <tr class="form-group">
+                    <th class="text-center">Name voyage</th>
+                    <th class="text-left">Date and time of departure</th>
+                    <th class="text-right">Date and time of arrival</th>
+                    <th class="text-right">Travel Time</th>
+                    <th class="text-right">Ticket Coast</th>
+                </tr>
+            </thead>
+            @foreach (VoyageData b in ViewBag.Result)
+            {
+                <tr>
+                    <td class="text-center">@b.VoyageName</td>
+                    <td class="text-left">@b.DepartureDateTime.ToUniversalTime()</td>
+                    <td class="text-right">@b.ArrivalDateTime.ToUniversalTime()</td>
+                    <td class="text-right">@b.TravelTime</td>
+                    <td class="text-right">@b.TicketCoast.ToString("#.## руб")</td>
+                    @*<td>
+                        @using (Html.BeginForm("AddToCart", "Cart"))
+                        {
+                            @Html.Hidden("id", b.VoyageID)
+                            @Html.HiddenFor(x => x.VoyageID)
+                            <input class="btn btn-sm btn-warning" type="submit" value="Reservation" />
+                        }
+                    </td>*@
+                    <td class="btn btn-default navbar-btn">
+                        @Html.ActionLink("Reservation", "AddToCart", "Cart", new { id = b.VoyageID }, null)
+                    </td>
+
+                </tr>
+
+
+
+
+
+
+                    @*<tr>
+                        <td>
+                            <p>@b.VoyageName</p>
+                        </td>
+
+                        <td>
+                            <p>@b.DepartureDateTime.ToUniversalTime()</p>
+                        </td>
+                        <td>
+                            <p>@b.ArrivalDateTime.ToUniversalTime()</p>
+                        </td>
+                        <td>
+                            <p>@b.TravelTime.</p>
+                        </td>
+                        <td>
+                            <p>@b.TicketCoast.ToString("#.## руб") </p>
+                        </td>
+                        <td>
+                            <p>
+                                @Html.ActionLink("Reservation", "AddToCart", "Cart", new { id = b.VoyageID }, null)
+                                <input type="hidden" name="voyageId1" value="@b.VoyageID" />
+                            </p>*@
+
+
+
+                    @*<div class="well">
+                            @*<h3>
+                                @*<strong>@Model.Tickets</strong>
+                                <span class="pull-right label label-primary">@Model.TicketCoast.ToString("C0")</span>
+                            </h3>
+                            @using (Html.BeginForm("AddToCart", "Cart"))
+                            {
+                                <div class="pull-right">
+                                    @Html.HiddenFor(x => x.VoyageID)
+                                    @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                                    <input type="submit" class="btn btn-success" value="Reservation ticket" />
+                                </div>
+                            }
+                            <span class="lead">@Model.VoyageName</span>
+                        </div>*@
+
+                    @*</td>
+                        </tr>*@
+
+            }
+        </table>
+    }
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+}
+
+
+
+

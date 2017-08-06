@@ -1,0 +1,15 @@
+﻿@model TicketStore.Web.Models.Cart
+
+<div class="navbar-right">
+    @Html.ActionLink("Buy ticket", "Index", "Cart",
+        new { returnUrl = Request.Url.PathAndQuery },
+        new { @class = "btn btn-default navbar-btn" })
+</div>
+
+<div class="navbar-text navbar-right">
+    <b>You orders:</b>
+    @Model.Lines.Sum(x => x.Quantity) ticket(s),
+    @Model.ComputeTotalValue().ToString("# BYN")
+</div>
+
+

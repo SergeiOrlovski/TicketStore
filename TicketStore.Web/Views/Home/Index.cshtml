@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>TicketStore</h1>
+    @if (User.Identity.IsAuthenticated == false)
+    {
+        <p class="lead">To place an order, please register or sign in to your account.</p>
+    }
+    else
+    {
+        <p class="lead">Thank you for choosing us!</p>
+    }
+
+</div>
